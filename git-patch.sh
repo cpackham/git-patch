@@ -68,8 +68,6 @@ do
 	shift
 done
 
-echo "GIT_DIR=$GIT_DIR"
-
 branch="$(git rev-parse --symbolic-full-name HEAD | sed 's|.*/||g')"
 patchrefs="refs/git-patch/$branch"
 
@@ -82,7 +80,7 @@ do_series()
 
 do_pop()
 {
-	test $# -eq 1 || die "fatal: git patch pop expects exactly one argument."
+	test $# -eq 1 || die "fatal: expected 1 argument."
 
 	# Verify that we have a valid object
 	sha1="$(git rev-parse --verify $1)" || exit $?
@@ -97,7 +95,7 @@ do_pop()
 
 do_push()
 {
-	test $# -eq 1 || die "fatal: git patch push expects exactly one argument."
+	test $# -eq 1 || die "fatal: expected 1 argument."
 
 	# Verify that we have a valid object
 	sha1="$(git rev-parse --verify $1)" || exit $?
@@ -110,7 +108,7 @@ do_push()
 
 do_float()
 {
-	test $# -eq 1 || die "fatal: git patch float expects exactly one argument."
+	test $# -eq 1 || die "fatal: expected 1 argument."
 
 	# Verify that we have a valid object
 	sha1=$(git rev-parse --verify "$1") || exit $?
