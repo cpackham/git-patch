@@ -103,7 +103,7 @@ do_float()
 	test $# -eq 1 || die "fatal: git patch float expects exactly one argument."
 
 	# Verify that we have a valid object
-	git rev-parse --verify "$1" >/dev/null || exit $?
+	sha1=$(git rev-parse --verify "$1") || exit $?
 
 	# Create a temporary reference to the commit
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
