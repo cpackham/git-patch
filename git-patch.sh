@@ -17,7 +17,7 @@
 SUBDIRECTORY_OK="yes"
 OPTIONS_KEEPDASHDASH=
 OPTIONS_SPEC="\
-git patch [options] series
+git patch [options] series [commitish]
 git patch [options] pop commitish
 git patch [options] push commitish
 git patch [options] float commitish
@@ -71,11 +71,21 @@ done
 branch="$(git rev-parse --symbolic-full-name HEAD | sed 's|.*/||g')"
 patchrefs="refs/git-patch/$branch"
 
+has_upstream()
+{
+	git rev-parse -q --verify @{u} >/dev/null 2>&1
+}
+
 do_series()
 {
-	# Should probably figure out the right rev-list args to use.
-	git log --oneline --decorate  @{u}..HEAD
-	git for-each-ref --format='- %(objectname:short) %(subject) (%(refname))' "$patchrefs"
+	revs="@{u}..HEAD"
+	has_upstream || revs="HEAD"
+	test $# -gt 0 && revs="$1..HEAD"
+
+	git --no-pager log --oneline --decorate "$revs"
+	git --no-pager for-each-ref \
+		--format='- %(objectname:short) %(subject) (%(refname))' \
+		"$patchrefs"
 }
 
 do_pop()
