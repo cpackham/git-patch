@@ -1,2 +1,7 @@
 bin_SCRIPTS = git-patch
-CLEANFILES = $(bin_SCRIPTS)
+man1_MANS = git-patch.1
+
+CLEANFILES = $(bin_SCRIPTS) $(man1_MANS)
+
+%.1: %.1.txt
+	$(A2X) -L -f manpage $^

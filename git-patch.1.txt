@@ -1,0 +1,52 @@
+GIT-PATCH(1)
+============
+:doctype: manpage
+
+NAME
+----
+git-patch - Git equivalent of some useful stgit commands 
+
+SYNOPSIS
+--------
+[verse]
+*git patch* ['options'] *series* ['commitish']
+*git patch* ['options'] *pop* commitish
+*git patch* ['options'] *push* commitish
+*git patch* ['options'] *float* commitish
+
+OPTIONS
+-------
+*-v --version* ::
+    Print version info
+
+DESCRIPTION
+-----------
+Git-patch provides a set of commands to manipulate commits as if they were a
+stack of patches, similar to stacked-git. The key difference is that git-patch
+is intended to interoperate with *git(1)*.
+
+COMMANDS
+--------
+
+*series* ::
+    List commits on the current branch as well as those that
+    have been popped.
+
+*pop* ::
+    Removes a commit from the current branch. The commit is saved
+    under refs/git-patch/<branch>/<name> for later retrieval.
+
+*push* ::
+    Re-apply a previously popped patch.
+
+*float* ::
+    Raise a commit up to the top of the current branch.
+
+EXAMPLE
+-------
+
+AUTHORS
+-------
+
+SEE ALSO
+--------

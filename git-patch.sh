@@ -22,25 +22,6 @@ git patch [options] pop commitish
 git patch [options] push commitish
 git patch [options] float commitish
 
-@PACKAGE@ extensions to git to emulate useful stgit commands.
-
-git patch series
-
-List commits on the current branch as well as those that have been popped.
-
-git patch pop
-
-Removes a commit from the current branch. The commit is saved under
-refs/git-patch/<branch>/<name> for later retrieval.
-
-git patch push
-
-Re-apply a previously popped patch.
-
-git patch float
-
-Raise a commit up to the top of the current branch.
-
 Options:
 --
 version      Print @PACKAGE@ version information
