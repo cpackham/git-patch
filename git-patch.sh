@@ -21,6 +21,7 @@ git patch [options] series [commit-ish]
 git patch [options] pop commit-ish
 git patch [options] push commit-ish
 git patch [options] float commit-ish
+git patch [options] delete commit-ish
 
 Options:
 --
@@ -57,6 +58,11 @@ has_upstream()
 	git rev-parse -q --verify @{u} >/dev/null 2>&1
 }
 
+sha1_to_ref()
+{
+	git for-each-ref $patchrefs | grep "$1" | cut -f2 | head -n1
+}
+
 do_series()
 {
 	revs="@{u}..HEAD"
@@ -91,10 +97,10 @@ do_push()
 	# Verify that we have a valid object
 	sha1="$(git rev-parse --verify $1)" || exit $?
 	# Figure out the ref that we used
-	ref="$(git for-each-ref $patchrefs | grep $sha1 | cut -f2)"
+	ref="$(sha1_to_ref $sha1)"
 
 	git cherry-pick "$sha1" || die
-	git update-ref -d "$ref"
+	test -n "$ref" && git update-ref -d "$ref"
 }
 
 do_float()
@@ -116,8 +122,20 @@ do_float()
 	git update-ref -d "$patchrefs/$name"
 }
 
+do_delete()
+{
+	test $# -eq 1 || die "fatal: expected 1 argument."
+
+	sha1=$(git rev-parse --verify "$1") || exit $?
+	ref="$(sha1_to_ref $sha1)"
+
+	test -n "$ref" && git update-ref -d "$ref" || \
+		die "warning: no patch deleted."
+	git gc --auto
+}
+
 case "$1" in
-	series|pop|push|float)
+	series|pop|push|float|delete)
 		command="$1"
 		shift
 		;;
