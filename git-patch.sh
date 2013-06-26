@@ -17,10 +17,10 @@
 SUBDIRECTORY_OK="yes"
 OPTIONS_KEEPDASHDASH=
 OPTIONS_SPEC="\
-git patch [options] series [commitish]
-git patch [options] pop commitish
-git patch [options] push commitish
-git patch [options] float commitish
+git patch [options] series [commit-ish]
+git patch [options] pop commit-ish
+git patch [options] push commit-ish
+git patch [options] float commit-ish
 
 Options:
 --

@@ -1,6 +1,7 @@
 GIT-PATCH(1)
 ============
 :doctype: manpage
+:man manual: Git Patch Manual
 
 NAME
 ----
@@ -9,10 +10,10 @@ git-patch - Git equivalent of some useful stgit commands
 SYNOPSIS
 --------
 [verse]
-*git patch* ['options'] *series* ['commitish']
-*git patch* ['options'] *pop* commitish
-*git patch* ['options'] *push* commitish
-*git patch* ['options'] *float* commitish
+*git patch* ['options'] *series* ['commit-ish']
+*git patch* ['options'] *pop* commit-ish
+*git patch* ['options'] *push* commit-ish
+*git patch* ['options'] *float* commit-ish
 
 OPTIONS
 -------
@@ -23,7 +24,23 @@ DESCRIPTION
 -----------
 Git-patch provides a set of commands to manipulate commits as if they were a
 stack of patches, similar to stacked-git. The key difference is that git-patch
-is intended to interoperate with *git(1)*.
+is intended to interoperate with *git*(1).
+
+By default the patch series is the set of commits on the local branch that are
+not present in the remote-tracking branch. In other words '@{u}..HEAD'. If
+the current branch is not tracking any remote then the stack of patches is from
+the root commit to the tip of the current branch.
+
+Git patch doesn't prevent re-writing upstream commits, however doing so is
+unwise (see RECOVERING FROM UPSTREAM REBASE in *git-rebase*(1) for more info).
+
+When a patch is \'popped' a reference is kept (under
+refs/git-patch/<branch>/<name>) the current branch is rebased to remove the
+specified commit.
+
+When a patch is \'pushed' it is cherry-picked onto tip of the current branch.
+Because the commit is re-written the sha1 will change (even if the parentage of
+the original commit is maintained.
 
 COMMANDS
 --------
@@ -33,8 +50,7 @@ COMMANDS
     have been popped.
 
 *pop* ::
-    Removes a commit from the current branch. The commit is saved
-    under refs/git-patch/<branch>/<name> for later retrieval.
+    Removes a commit from the current branch and save it for later retrieval.
 
 *push* ::
     Re-apply a previously popped patch.
@@ -42,11 +58,13 @@ COMMANDS
 *float* ::
     Raise a commit up to the top of the current branch.
 
-EXAMPLE
--------
+// EXAMPLES
+// --------
 
 AUTHORS
 -------
+Chris Packham
 
 SEE ALSO
 --------
+*git*(1), *git-rebase*(1)
