@@ -22,6 +22,7 @@ git patch [options] pop commit-ish
 git patch [options] push commit-ish
 git patch [options] float commit-ish
 git patch [options] delete commit-ish
+git patch [options] fixup commit-ish [file] [...]
 
 Options:
 --
@@ -134,8 +135,30 @@ do_delete()
 	git gc --auto
 }
 
+do_fixup()
+{
+	test $# -ge 1 || die "fatal: expected at least 1 argument."
+
+	sha1=$(git rev-parse --verify "$1") || exit $?
+	headsha1=$(git rev-parse HEAD)
+
+	if test $# -ge 2
+	then
+		shift
+		git add "$@" || die
+	fi
+
+	if test $sha1 == $headsha1
+	then
+		git commit --amend
+	else
+		git commit -m "fixup! $sha1" || die
+		git rebase -i --autosquash "$sha1^"
+	fi
+}
+
 case "$1" in
-	series|pop|push|float|delete)
+	series|pop|push|float|delete|fixup)
 		command="$1"
 		shift
 		;;
