@@ -152,7 +152,7 @@ do_fixup()
 	then
 		git commit --amend
 	else
-		git commit -m "fixup! $sha1" || die
+		git commit --fixup="$sha1" || die
 		git rebase -i --autosquash "$sha1^"
 	fi
 }
