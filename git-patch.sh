@@ -162,6 +162,9 @@ case "$1" in
 		command="$1"
 		shift
 		;;
+	'')
+		command="series"
+		;;
 	*)
 		die "fatal: Unknown command $1, try git patch -h"
 		;;
