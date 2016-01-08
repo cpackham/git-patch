@@ -148,7 +148,7 @@ do_fixup()
 		git add "$@" || die
 	fi
 
-	if test $sha1 == $headsha1
+	if test $sha1 = $headsha1
 	then
 		git commit --amend
 	else
