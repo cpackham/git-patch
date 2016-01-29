@@ -148,7 +148,7 @@ do_fixup()
 		git add "$@" || die
 	fi
 
-	if test $sha1 == $headsha1
+	if test $sha1 = $headsha1
 	then
 		git commit --amend
 	else
@@ -161,6 +161,9 @@ case "$1" in
 	series|pop|push|float|delete|fixup)
 		command="$1"
 		shift
+		;;
+	'')
+		command="series"
 		;;
 	*)
 		die "fatal: Unknown command $1, try git patch -h"
