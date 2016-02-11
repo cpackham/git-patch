@@ -1,0 +1,17 @@
+Source: git-patch
+Section: Development
+Priority: optional
+Maintainer: Chris Packham <judge.packham@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), a2x, asciidoc
+Standards-Version: 3.9.4
+Vcs-Git: https://github.com/cpackham/git-patch.git
+Vcs-Browser: https://github.com/cpackham/git-patch
+
+Package: git-patch
+Architecture: all
+Depends: ${misc:Depends}
+Description: git-patch - Git equivalent of some useful stgit commands
+ Git-patch provides a set of commands to manipulate commits as if they were a
+ stack of patches, similar to stacked-git. The key difference is that git-patch
+ is intended to interoperate with git.
+
