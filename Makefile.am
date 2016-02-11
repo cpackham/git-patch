@@ -4,4 +4,4 @@ EXTRA_DIST = $(man1_MANS)
 CLEANFILES = $(bin_SCRIPTS) $(man1_MANS)
 
 %.1: %.1.txt
-	$(A2X) -L -f manpage $^
+	$(AM_V_GEN)$(A2X) -L -f manpage $^
