@@ -4,9 +4,5 @@
 #export DH_VERBOSE=1
 
 %:
-	dh $@
-
-override_dh_auto_configure:
-	autoreconf -fvi
-	./configure --prefix=/usr
+	dh $@ --with autoreconf
 
