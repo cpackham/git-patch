@@ -85,6 +85,8 @@ do_pop()
 
 	# Save the patch
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
+	git rev-parse -q --verify "$patchrefs/$name" >/dev/null && \
+		die "fatal: $patchrefs/$name already exists"
 	git update-ref "$patchrefs/$name" "$sha1" || die
 
 	# Remove the patch from the current stack
