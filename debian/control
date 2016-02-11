@@ -1,5 +1,5 @@
 Source: git-patch
-Section: Development
+Section: vcs
 Priority: optional
 Maintainer: Chris Packham <judge.packham@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), dh-autoreconf, a2x, asciidoc
