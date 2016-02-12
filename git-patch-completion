@@ -1,0 +1,46 @@
+# bash completion for git-patch(1)
+
+source /usr/share/bash-completion/completions/git
+
+__git_popped_patches ()
+{
+    local dir="$(__gitdir)"
+    if [ -d "$dir" ]; then
+        git --git-dir="$dir" for-each-ref --format='%(refname:short)' \
+                refs/git-patch
+        return
+    fi
+}
+
+__git_applied_patches ()
+{
+    local dir="$(__gitdir)"
+    if [ -d "$dir" ]; then
+        git --git-dir="$dir" log --pretty='%h' "@{u}..HEAD"
+        return
+    fi
+}
+
+_git_patch()
+{
+    local cur prev words cword
+    _init_completion || return
+
+    case $prev in
+        series)
+            COMPREPLY=""
+            return
+            ;;
+        pop|fixup|float)
+            COMPREPLY=($(compgen -W "$(__git_applied_patches)" -- $cur))
+            return
+            ;;
+        push|delete)
+            COMPREPLY=($(compgen -W "$(__git_popped_patches)" -- $cur))
+            return
+            ;;
+    esac
+
+    COMPREPLY=($(compgen -W "series pop push float delete fixup" -- $cur))
+} &&
+complete -F _git_patch "git patch"
