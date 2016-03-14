@@ -14,14 +14,6 @@ git patch float commit-ish
 ```
 
 ## Installation
-### From tarball
-```
-./configure
-make
-make install
-```
-
-### From repository
 ```
 autoreconf -fvi
 ./configure
@@ -29,8 +21,9 @@ make
 make install
 ```
 
-## Without man page
+### Without man page
 ```
+autoreconf -fvi
 ./configure
 make git-patch
 make install-exec
