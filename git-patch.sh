@@ -26,7 +26,7 @@ git patch [options] fixup commit-ish [file] [...]
 
 Options:
 --
-version      Print @PACKAGE@ version information
+version      Print @PACKAGE_@ version information
 h,help       Print this help message and exit
 "
 
@@ -37,7 +37,7 @@ while test $# -ne 0
 do
 	case "$1" in
 	--version)
-		say "@PACKAGE@ @VERSION@"
+		say "@PACKAGE_@ @VERSION_@"
 		exit 0
 		;;
 	--)
