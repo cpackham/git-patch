@@ -3,6 +3,11 @@ man1_MANS = git-patch.1
 EXTRA_DIST = $(man1_MANS)
 CLEANFILES = $(bin_SCRIPTS) $(man1_MANS)
 
+if ENABLE_BASH_COMPLETION
+bashcompletiondir = $(BASH_COMPLETION_DIR)
+dist_bashcompletion_DATA = git-patch-completion
+endif
+
 %: %.sh
 	$(AM_V_GEN)$(SED) \
 		-e "s/@PACKAGE_@/$(PACKAGE)/g" \
