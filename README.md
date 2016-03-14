@@ -15,9 +15,11 @@ git patch float commit-ish
 
 ## Installation
 ### From tarball
+```
 ./configure
 make
 make install
+```
 
 ### From repository
 ```
