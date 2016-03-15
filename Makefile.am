@@ -10,8 +10,8 @@ endif
 
 %: %.sh
 	$(AM_V_GEN)$(SED) \
-		-e "s/@PACKAGE_@/$(PACKAGE)/g" \
-		-e "s/@VERSION_@/$(VERSION)/g" \
+		-e "s/[@]PACKAGE[@]/$(PACKAGE)/g" \
+		-e "s/[@]VERSION[@]/$(VERSION)/g" \
 		<$^ >$@
 
 %.1: %.1.txt
