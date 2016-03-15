@@ -16,11 +16,12 @@ AM_V_A2X = $(am__v_A2X_@AM_V@)
 am__v_A2X_ = $(am__v_A2X_@AM_DEFAULT_V@)
 am__v_A2X_0 = @echo "  A2X     " $@;
 
-%: %.sh
+SUFFIXES = .sh .txt
+.sh:
 	$(AM_V_SED)$(SED) \
 		-e "s/[@]PACKAGE[@]/$(PACKAGE)/g" \
 		-e "s/[@]VERSION[@]/$(VERSION)/g" \
-		<$^ >$@
+		<$< >$@
 
-%.1: %.1.txt
-	$(AM_V_A2X)$(A2X) -L -f manpage $^
+.txt:
+	$(AM_V_A2X)$(A2X) -L -f manpage $<
