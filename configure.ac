@@ -1,5 +1,5 @@
 AC_INIT([git-patch],
-	[m4_esyscmd_s([git describe --always --dirty])],
+	[m4_esyscmd_s([build-aux/git-version-gen .tarball-version])],
 	[judge.packham@gmail.com])
 AM_INIT_AUTOMAKE([-Wall foreign])
 AM_SILENT_RULES([yes])
