@@ -113,6 +113,12 @@ do_float()
 	# Verify that we have a valid object
 	sha1=$(git rev-parse --verify "$1") || exit $?
 
+	if has_upstream
+	then
+		git merge-base --is-ancestor "$sha1" "@{upstream}" && \
+			die "fatal: attempt to modify published commit"
+	fi
+
 	# Create a temporary reference to the commit
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
 	git update-ref "$patchrefs/$name" "$sha1" || die
@@ -143,6 +149,12 @@ do_fixup()
 
 	sha1=$(git rev-parse --verify "$1") || exit $?
 	headsha1=$(git rev-parse HEAD)
+
+	if has_upstream
+	then
+		git merge-base --is-ancestor "$sha1" "@{upstream}" && \
+			die "fatal: attempt to modify published commit"
+	fi
 
 	if test $# -ge 2
 	then
