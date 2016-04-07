@@ -113,6 +113,9 @@ do_float()
 	# Verify that we have a valid object
 	sha1=$(git rev-parse --verify "$1") || exit $?
 
+	# No point in floating HEAD
+	test "$sha1" = "$(git rev-parse --verify HEAD)" && exit 0
+
 	if has_upstream
 	then
 		git merge-base --is-ancestor "$sha1" "@{upstream}" && \
