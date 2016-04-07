@@ -2,7 +2,8 @@
 
 Git-patch provides a set of commands to manipulate commits as if they were a
 stack of patches, similar to stacked-git. The key difference is that git-patch
-is intended to interoperate with **git**.
+is intended to interoperate with **git**. Git-patch should work with any
+version of git from 1.8.0 onwards.
 
 ## Usage
 See the man page for a fuller description, the supported commands are:

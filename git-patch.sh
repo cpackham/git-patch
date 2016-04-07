@@ -37,7 +37,8 @@ while test $# -ne 0
 do
 	case "$1" in
 	--version)
-		say "@PACKAGE@ @VERSION@"
+		git --version
+		say "@PACKAGE@ version @VERSION@"
 		exit 0
 		;;
 	--)
