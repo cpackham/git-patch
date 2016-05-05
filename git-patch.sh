@@ -65,6 +65,28 @@ sha1_to_ref()
 	git for-each-ref $patchrefs | grep "$1" | cut -f2 | head -n1
 }
 
+top_ref()
+{
+	git for-each-ref \
+		--sort=refname \
+		--format="%(refname)" $patchrefs \
+	| tail -n1
+}
+
+augment_name()
+{
+	existing=$(top_ref)
+
+	num="0001"
+	if test -n "$existing"; then
+		existing="${existing##*/}"
+		num="${existing%%--*}"
+		num="$(printf %04d $(($num+1)))"
+	fi
+
+	echo "$num--$1"
+}
+
 do_series()
 {
 	revs="@{u}..HEAD"
@@ -86,6 +108,7 @@ do_pop()
 
 	# Save the patch
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
+	name=$(augment_name "$name")
 	git rev-parse -q --verify "$patchrefs/$name" >/dev/null && \
 		die "fatal: $patchrefs/$name already exists"
 	git update-ref "$patchrefs/$name" "$sha1" || die
