@@ -19,7 +19,7 @@ OPTIONS_KEEPDASHDASH=
 OPTIONS_SPEC="\
 git patch [options] series [commit-ish]
 git patch [options] pop commit-ish
-git patch [options] push commit-ish
+git patch [options] push [commit-ish]
 git patch [options] float commit-ish
 git patch [options] delete commit-ish
 git patch [options] fixup commit-ish [file] [...]
@@ -120,10 +120,16 @@ do_pop()
 
 do_push()
 {
-	test $# -eq 1 || die "fatal: expected 1 argument."
+	if test $# -eq 0; then
+		rev=$(top_ref)
+	elif test $# -eq 1; then
+		rev="$1"
+	else
+		die "fatal: expected at most 1 argument."
+	fi
 
 	# Verify that we have a valid object
-	sha1="$(git rev-parse --verify $1)" || exit $?
+	sha1="$(git rev-parse --verify $rev)" || exit $?
 	# Figure out the ref that we used
 	ref="$(sha1_to_ref $sha1)"
 
