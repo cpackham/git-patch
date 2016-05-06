@@ -95,6 +95,7 @@ do_series()
 
 	git --no-pager log --oneline --decorate "$revs"
 	git --no-pager for-each-ref \
+		--sort=-refname \
 		--format='- %(objectname:short) %(subject) (%(refname))' \
 		"$patchrefs"
 }
