@@ -18,7 +18,7 @@ SUBDIRECTORY_OK="yes"
 OPTIONS_KEEPDASHDASH=
 OPTIONS_SPEC="\
 git patch [options] series [commit-ish]
-git patch [options] pop commit-ish
+git patch [options] pop [commit-ish]
 git patch [options] push [commit-ish]
 git patch [options] float commit-ish
 git patch [options] delete commit-ish
@@ -102,10 +102,17 @@ do_series()
 
 do_pop()
 {
-	test $# -eq 1 || die "fatal: expected 1 argument."
+	if test $# -eq 0; then
+		rev="HEAD"
+	elif test $# -eq 1; then
+		rev="$1"
+	else
+		die "fatal: expected at most 1 argument."
+	fi
+
 
 	# Verify that we have a valid object
-	sha1="$(git rev-parse --verify $1)" || exit $?
+	sha1="$(git rev-parse --verify $rev)" || exit $?
 
 	# Save the patch
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
@@ -115,7 +122,7 @@ do_pop()
 	git update-ref "$patchrefs/$name" "$sha1" || die
 
 	# Remove the patch from the current stack
-	git rebase --onto "$1"^ "$1" "$branch"
+	git rebase --onto "$rev"^ "$rev" "$branch"
 }
 
 do_push()
