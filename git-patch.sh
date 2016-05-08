@@ -18,8 +18,8 @@ SUBDIRECTORY_OK="yes"
 OPTIONS_KEEPDASHDASH=
 OPTIONS_SPEC="\
 git patch [options] series [commit-ish]
-git patch [options] pop commit-ish
-git patch [options] push commit-ish
+git patch [options] pop [commit-ish]
+git patch [options] push [commit-ish]
 git patch [options] float commit-ish
 git patch [options] delete commit-ish
 git patch [options] fixup commit-ish [file] [...]
@@ -65,6 +65,28 @@ sha1_to_ref()
 	git for-each-ref $patchrefs | grep "$1" | cut -f2 | head -n1
 }
 
+top_ref()
+{
+	git for-each-ref \
+		--sort=refname \
+		--format="%(refname)" $patchrefs \
+	| tail -n1
+}
+
+augment_name()
+{
+	existing=$(top_ref)
+
+	num="0001"
+	if test -n "$existing"; then
+		existing="${existing##*/}"
+		num="${existing%%--*}"
+		num="$(printf %04d $(($num+1)))"
+	fi
+
+	echo "$num--$1"
+}
+
 do_series()
 {
 	revs="@{u}..HEAD"
@@ -73,33 +95,48 @@ do_series()
 
 	git --no-pager log --oneline --decorate "$revs"
 	git --no-pager for-each-ref \
+		--sort=-refname \
 		--format='- %(objectname:short) %(subject) (%(refname))' \
 		"$patchrefs"
 }
 
 do_pop()
 {
-	test $# -eq 1 || die "fatal: expected 1 argument."
+	if test $# -eq 0; then
+		rev="HEAD"
+	elif test $# -eq 1; then
+		rev="$1"
+	else
+		die "fatal: expected at most 1 argument."
+	fi
+
 
 	# Verify that we have a valid object
-	sha1="$(git rev-parse --verify $1)" || exit $?
+	sha1="$(git rev-parse --verify $rev)" || exit $?
 
 	# Save the patch
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
+	name=$(augment_name "$name")
 	git rev-parse -q --verify "$patchrefs/$name" >/dev/null && \
 		die "fatal: $patchrefs/$name already exists"
 	git update-ref "$patchrefs/$name" "$sha1" || die
 
 	# Remove the patch from the current stack
-	git rebase --onto "$1"^ "$1" "$branch"
+	git rebase --onto "$rev"^ "$rev" "$branch"
 }
 
 do_push()
 {
-	test $# -eq 1 || die "fatal: expected 1 argument."
+	if test $# -eq 0; then
+		rev=$(top_ref)
+	elif test $# -eq 1; then
+		rev="$1"
+	else
+		die "fatal: expected at most 1 argument."
+	fi
 
 	# Verify that we have a valid object
-	sha1="$(git rev-parse --verify $1)" || exit $?
+	sha1="$(git rev-parse --verify $rev)" || exit $?
 	# Figure out the ref that we used
 	ref="$(sha1_to_ref $sha1)"
 

@@ -11,8 +11,8 @@ SYNOPSIS
 --------
 [verse]
 *git patch* ['options'] *series* ['commit-ish']
-*git patch* ['options'] *pop* commit-ish
-*git patch* ['options'] *push* commit-ish
+*git patch* ['options'] *pop* ['commit-ish']
+*git patch* ['options'] *push* ['commit-ish']
 *git patch* ['options'] *float* commit-ish
 
 OPTIONS
@@ -50,10 +50,12 @@ COMMANDS
     have been popped.
 
 *pop* ::
-    Removes a commit from the current branch and save it for later retrieval.
+    Removes a commit from the current branch and save it for later retrieval,
+    defaulting to HEAD if no commit-ish is supplied.
 
 *push* ::
-    Re-apply a previously popped patch.
+    Re-apply a previously popped patch, defaulting to last popped patch if no
+    commit-ish is supplied.
 
 *float* ::
     Raise a commit up to the top of the current branch.
