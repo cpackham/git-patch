@@ -114,6 +114,12 @@ do_pop()
 	# Verify that we have a valid object
 	sha1="$(git rev-parse --verify $rev)" || exit $?
 
+	if has_upstream
+	then
+		git merge-base --is-ancestor "$sha1" "@{upstream}" && \
+			die "fatal: attempt to pop published commit"
+	fi
+
 	# Save the patch
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
 	name=$(augment_name "$name")
