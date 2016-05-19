@@ -77,11 +77,13 @@ augment_name()
 {
 	existing=$(top_ref)
 
-	num="0001"
 	if test -n "$existing"; then
 		existing="${existing##*/}"
 		num="${existing%%--*}"
+		num="$(echo $num | sed -e 's/^0*//')"
 		num="$(printf %04d $(($num+1)))"
+	else
+		num="0001"
 	fi
 
 	echo "$num--$1"
