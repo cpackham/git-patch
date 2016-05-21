@@ -77,11 +77,13 @@ augment_name()
 {
 	existing=$(top_ref)
 
-	num="0001"
 	if test -n "$existing"; then
 		existing="${existing##*/}"
 		num="${existing%%--*}"
+		num="$(echo $num | sed -e 's/^0*//')"
 		num="$(printf %04d $(($num+1)))"
+	else
+		num="0001"
 	fi
 
 	echo "$num--$1"
@@ -113,6 +115,12 @@ do_pop()
 
 	# Verify that we have a valid object
 	sha1="$(git rev-parse --verify $rev)" || exit $?
+
+	if has_upstream
+	then
+		git merge-base --is-ancestor "$sha1" "@{upstream}" && \
+			die "fatal: attempt to pop published commit"
+	fi
 
 	# Save the patch
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
