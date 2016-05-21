@@ -65,6 +65,15 @@ sha1_to_ref()
 	git for-each-ref $patchrefs | grep "$1" | cut -f2 | head -n1
 }
 
+check_rewrite()
+{
+	if has_upstream
+	then
+		git merge-base --is-ancestor "$1" "@{upstream}" && \
+			die "fatal: attempt to modify published commit"
+	fi
+}
+
 top_ref()
 {
 	git for-each-ref \
@@ -116,11 +125,7 @@ do_pop()
 	# Verify that we have a valid object
 	sha1="$(git rev-parse --verify $rev)" || exit $?
 
-	if has_upstream
-	then
-		git merge-base --is-ancestor "$sha1" "@{upstream}" && \
-			die "fatal: attempt to pop published commit"
-	fi
+	check_rewrite "$sha1"
 
 	# Save the patch
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
@@ -162,11 +167,7 @@ do_float()
 	# No point in floating HEAD
 	test "$sha1" = "$(git rev-parse --verify HEAD)" && exit 0
 
-	if has_upstream
-	then
-		git merge-base --is-ancestor "$sha1" "@{upstream}" && \
-			die "fatal: attempt to modify published commit"
-	fi
+	check_rewrite "$sha1"
 
 	# Create a temporary reference to the commit
 	name="$(git rev-list --pretty='%f' $sha1 -1 | tail -n1)"
@@ -199,11 +200,7 @@ do_fixup()
 	sha1=$(git rev-parse --verify "$1") || exit $?
 	headsha1=$(git rev-parse HEAD)
 
-	if has_upstream
-	then
-		git merge-base --is-ancestor "$sha1" "@{upstream}" && \
-			die "fatal: attempt to modify published commit"
-	fi
+	check_rewrite "$sha1"
 
 	if test $# -ge 2
 	then
