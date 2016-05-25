@@ -174,10 +174,10 @@ do_float()
 	git update-ref "$patchrefs/$name" "$sha1" || die
 
 	# Remove the patch from the current stack
-	git rebase --onto "$1"^ "$1" "$branch" || die
+	git rebase --onto "$sha1"^ "$sha1" "$branch" || die
 
 	# Re-apply the commit and clean up
-	git cherry-pick "$1" || die
+	git cherry-pick "$sha1" || die
 	git update-ref -d "$patchrefs/$name"
 }
 
