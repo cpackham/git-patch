@@ -22,7 +22,7 @@ git patch [options] pop [commit-ish]
 git patch [options] push [commit-ish]
 git patch [options] float commit-ish
 git patch [options] delete commit-ish
-git patch [options] fixup commit-ish [file] [...]
+git patch [options] fixup [commit-ish] [file] [...]
 
 Options:
 --
@@ -195,10 +195,14 @@ do_delete()
 
 do_fixup()
 {
-	test $# -ge 1 || die "fatal: expected at least 1 argument."
-
-	sha1=$(git rev-parse --verify "$1") || exit $?
 	headsha1=$(git rev-parse HEAD)
+
+	if test $# -ge 1
+	then
+		sha1=$(git rev-parse --verify "$1") || exit $?
+	else
+		sha1=$headsha1
+	fi
 
 	check_rewrite "$sha1"
 

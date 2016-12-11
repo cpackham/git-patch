@@ -64,9 +64,10 @@ COMMANDS
     Permanently delete a popped patch
 
 *fixup* ::
-    Incorporate a change into an existing commit. If the specified commit is
-    equivalent to HEAD a simple 'git commit --amend' will be done. If the
-    commit is further back 'git rebase -i --autosquash' is invoked.
+    Incorporate a change into an existing commit or HEAD if no commit is specified.
+    If the specified commit is equivalent to HEAD a simple 'git commit --amend'
+    will be done. If the commit is further back 'git rebase -i --autosquash' is
+    invoked.
 
 // EXAMPLES
 // --------
