@@ -10,10 +10,11 @@ git-patch - Git equivalent of some useful stgit commands
 SYNOPSIS
 --------
 [verse]
-*git patch* ['options'] *series* ['commit-ish']
-*git patch* ['options'] *pop* ['commit-ish']
-*git patch* ['options'] *push* ['commit-ish']
-*git patch* ['options'] *float* commit-ish
+*git patch series* ['commit-ish']
+*git patch pop* ['commit-ish']
+*git patch push* ['commit-ish']
+*git patch float* commit-ish
+*git patch fixup* ['commit-ish'] [file] [...]
 
 OPTIONS
 -------
@@ -68,9 +69,6 @@ COMMANDS
     If the specified commit is equivalent to HEAD a simple 'git commit --amend'
     will be done. If the commit is further back 'git rebase -i --autosquash' is
     invoked.
-
-// EXAMPLES
-// --------
 
 AUTHORS
 -------
