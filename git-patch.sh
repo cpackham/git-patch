@@ -14,21 +14,15 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
+dashless=$(basename "$0" | sed -e 's/-/ /')
+USAGE="series [commit-ish]
+   or: pop [commit-ish]
+   or: $dashless push [commit-ish]
+   or: $dashless float commit-ish
+   or: $dashless delete commit-ish
+   or: $dashless fixup [commit-ish] [file] [...]"
+OPTIONS_SPEC=
 SUBDIRECTORY_OK="yes"
-OPTIONS_KEEPDASHDASH=
-OPTIONS_SPEC="\
-git patch [options] series [commit-ish]
-git patch [options] pop [commit-ish]
-git patch [options] push [commit-ish]
-git patch [options] float commit-ish
-git patch [options] delete commit-ish
-git patch [options] fixup [commit-ish] [file] [...]
-
-Options:
---
-version      Print @PACKAGE@ version information
-h,help       Print this help message and exit
-"
 
 . $(git --exec-path)/git-sh-setup
 
@@ -41,12 +35,15 @@ do
 		say "@PACKAGE@ version @VERSION@"
 		exit 0
 		;;
+	-h|--help)
+		usage
+		;;
 	--)
 		shift
 		break
 		;;
 	*)
-		usage
+		break
 		;;
 	esac
 	shift
