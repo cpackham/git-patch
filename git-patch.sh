@@ -20,7 +20,7 @@ USAGE="series [commit-ish]
    or: $dashless push [commit-ish]
    or: $dashless float commit-ish
    or: $dashless delete commit-ish
-   or: $dashless fixup [commit-ish] [file] [...]"
+   or: $dashless fixup [-a] [--no-edit] [commit-ish] [file] [...]"
 OPTIONS_SPEC=
 SUBDIRECTORY_OK="yes"
 
@@ -192,6 +192,21 @@ do_delete()
 
 do_fixup()
 {
+	commit_opts="--amend"
+
+	while test $# -ne 0
+	do
+		case "$1" in
+		--no-edit|-a)
+			commit_opts="$commit_opts $1"
+			;;
+		*)
+			break
+			;;
+		esac
+		shift
+	done
+
 	headsha1=$(git rev-parse HEAD)
 
 	if test $# -ge 1
@@ -211,7 +226,7 @@ do_fixup()
 
 	if test $sha1 = $headsha1
 	then
-		git commit --amend
+		git commit $commit_opts
 	else
 		git commit --fixup="$sha1" || die
 		git rebase -i --autosquash "$sha1^"

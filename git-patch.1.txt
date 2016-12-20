@@ -14,7 +14,7 @@ SYNOPSIS
 *git patch pop* ['commit-ish']
 *git patch push* ['commit-ish']
 *git patch float* commit-ish
-*git patch fixup* ['commit-ish'] [file] [...]
+*git patch fixup* [-a] [--no-edit] ['commit-ish'] [file] [...]
 
 OPTIONS
 -------
@@ -69,6 +69,9 @@ COMMANDS
     If the specified commit is equivalent to HEAD a simple 'git commit --amend'
     will be done. If the commit is further back 'git rebase -i --autosquash' is
     invoked.
+
+    The -a and --no-edit options are passed through to *git commit*(1) when running
+    fixup on the HEAD commit.
 
 AUTHORS
 -------
