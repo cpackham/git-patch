@@ -1,3 +1,9 @@
+git-patch (4.0git) unstable; urgency=medium
+
+  * New release
+
+ -- Chris Packham <judge.packham@gmail.com>  Wed, Sep  6 2017 16:48:56 +1200
+
 git-patch (1.0git) unstable; urgency=medium
 
   * Initial release.
