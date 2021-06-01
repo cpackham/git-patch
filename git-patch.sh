@@ -16,7 +16,7 @@
 
 dashless=$(basename "$0" | sed -e 's/-/ /')
 USAGE="series [commit-ish]
-   or: pop [commit-ish]
+   or: $dashless pop [commit-ish]
    or: $dashless push [commit-ish]
    or: $dashless float commit-ish
    or: $dashless delete commit-ish
