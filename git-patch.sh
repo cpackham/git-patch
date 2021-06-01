@@ -238,6 +238,10 @@ case "$1" in
 		command="$1"
 		shift
 		;;
+	rm|remove)
+		command="delete"
+		shift
+		;;
 	'')
 		command="series"
 		;;
