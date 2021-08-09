@@ -251,4 +251,4 @@ case "$1" in
 esac
 
 # Invoke helper function
-do_"${command}" $@
+do_"${command}" "$@"
